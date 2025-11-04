@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Taskly – Rejestracja</title>
+    <link rel="stylesheet" href="/Styl/style.css" />
+  </head>
+  <body>
+    <script src="/konfiguracja.js"></script>
+    <main class="dashboard" style="max-width:520px;margin:0 auto;padding-top:4rem;">
+      <section class="card">
+        <header style="text-align:center;">
+          <h1>Załóż konto Taskly</h1>
+          <p>Organizuj zadania, korzystaj z kalendarza i powiadomień.</p>
+        </header>
+        <form id="formularz-rejestracja" class="task-form" novalidate>
+          <div class="form-group">
+            <label for="username">Nazwa wyświetlana</label>
+            <input type="text" id="username" name="username" required minlength="3" placeholder="Twoje imię" />
+          </div>
+          <div class="form-group">
+            <label for="email">Adres e-mail</label>
+            <input type="email" id="email" name="email" required autocomplete="email" />
+          </div>
+          <div class="form-group">
+            <label for="password">Hasło</label>
+            <input type="password" id="password" name="password" required minlength="6" autocomplete="new-password" />
+          </div>
+          <div id="komunikat-rejestracja" class="alert" role="status" aria-live="polite"></div>
+          <button type="submit">Utwórz konto</button>
+        </form>
+        <p style="text-align:center;margin-top:1.5rem;">
+          Masz konto? <a href="/Html/logowanie.html">Zaloguj się</a>
+        </p>
+      </section>
+    </main>
+
+    <script type="module">
+      import { handleRegisterForm } from '/Skrypt/Uwierzytelnienie.js';
+
+      handleRegisterForm();
+    </script>
+  </body>
+</html>

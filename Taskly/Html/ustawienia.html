@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Taskly – Ustawienia konta</title>
+    <link rel="stylesheet" href="/Styl/style.css" />
+  </head>
+  <body>
+    <script src="/konfiguracja.js"></script>
+    <header>
+      <div class="nav-logo">
+        <span>🌓</span>
+        <span>Taskly</span>
+      </div>
+      <nav class="nav-akcje">
+        <a href="/Html/index.html">Panel</a>
+        <a href="/Html/lista-zadan.html">Lista</a>
+        <button type="button" data-akcja="wyloguj">Wyloguj</button>
+      </nav>
+    </header>
+
+    <main class="dashboard" style="max-width:960px;margin:0 auto;">
+      <section class="card">
+        <h1>Ustawienia profilu</h1>
+        <p>Zarządzaj swoim kontem, powiadomieniami i bezpieczeństwem.</p>
+        <form id="formularz-profil" class="task-form" style="margin-top:1.5rem;">
+          <div class="form-group">
+            <label for="username">Nazwa użytkownika</label>
+            <input type="text" id="username" name="username" required minlength="3" />
+          </div>
+          <button type="submit">Zapisz profil</button>
+        </form>
+        <div id="komunikat-profil" class="alert" role="status" aria-live="polite"></div>
+      </section>
+
+      <section class="card">
+        <h2>Powiadomienia e-mail</h2>
+        <p>Zarządzaj przypomnieniami o zbliżających się terminach.</p>
+        <div class="form-group" style="margin-top:1rem;">
+          <label style="display:flex;align-items:center;gap:0.75rem;">
+            <input type="checkbox" id="toggle-powiadomienia" />
+            Włącz powiadomienia
+          </label>
+          <span data-status-powiadomien>Ładowanie ustawień...</span>
+        </div>
+      </section>
+
+      <section class="card" style="border-color:var(--niebezpieczenstwo);">
+        <h2>Usuwanie konta</h2>
+        <p>Usunięcie konta spowoduje trwałe usunięcie wszystkich zadań i danych profilu.</p>
+        <button type="button" class="secondary" data-akcja="usun-konto">Usuń konto</button>
+      </section>
+    </main>
+
+    <footer>
+      © <span id="rok"></span> Taskly
+    </footer>
+
+    <script>
+      document.getElementById('rok').textContent = new Date().getFullYear();
+    </script>
+    <script type="module">
+      import { apiFetch, zabezpieczStrone, handleLogout } from '/Skrypt/Uwierzytelnienie.js';
+      import { initPowiadomienia } from '/Skrypt/Powiadomienia.js';
+
+      const komunikat = document.getElementById('komunikat-profil');
+      const form = document.getElementById('formularz-profil');
+
+      const showMessage = (type, message) => {
+        komunikat.textContent = message;
+        komunikat.className = `alert ${type}`;
+        setTimeout(() => {
+          komunikat.textContent = '';
+          komunikat.className = 'alert';
+        }, 4000);
+      };
+
+      const loadProfile = async () => {
+        await zabezpieczStrone();
+        try {
+          const profile = await apiFetch('/api/auth/profile');
+          if (profile?.username) {
+            form.username.value = profile.username;
+          }
+        } catch (error) {
+          showMessage('error', error.message || 'Nie udało się pobrać profilu');
+        }
+      };
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        try {
+          await apiFetch('/api/auth/profile', {
+            method: 'POST',
+            body: JSON.stringify({ username: form.username.value.trim() })
+          });
+          showMessage('success', 'Profil zapisany.');
+        } catch (error) {
+          showMessage('error', error.message || 'Nie udało się zapisać profilu.');
+        }
+      });
+
+      document.querySelector('[data-akcja="usun-konto"]').addEventListener('click', async () => {
+        if (!confirm('Czy na pewno chcesz usunąć konto?')) return;
+        try {
+          await apiFetch('/api/auth/account', { method: 'DELETE' });
+          alert('Konto zostało usunięte. Zostaniesz wylogowany.');
+          window.location.href = '/Html/rejestracja.html';
+        } catch (error) {
+          alert(error.message || 'Nie udało się usunąć konta.');
+        }
+      });
+
+      await loadProfile();
+      await initPowiadomienia();
+      handleLogout();
+    </script>
+  </body>
+</html>
