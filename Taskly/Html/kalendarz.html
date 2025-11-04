@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Taskly – Kalendarz zadań</title>
+    <link rel="stylesheet" href="/Styl/style.css" />
+  </head>
+  <body>
+    <script src="/konfiguracja.js"></script>
+    <header>
+      <div class="nav-logo">
+        <span>🌓</span>
+        <span>Taskly</span>
+      </div>
+      <nav class="nav-akcje">
+        <a href="/Html/index.html">Panel</a>
+        <a href="/Html/lista-zadan.html">Lista</a>
+        <a href="/Html/ustawienia.html">Ustawienia</a>
+        <button type="button" data-akcja="wyloguj">Wyloguj</button>
+      </nav>
+    </header>
+
+    <main class="dashboard" style="max-width:1200px;margin:0 auto;">
+      <section class="card">
+        <header style="display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between;">
+          <div>
+            <h1>Pełny kalendarz</h1>
+            <p>Przeciągaj zadania między dniami, aby aktualizować terminy.</p>
+          </div>
+          <div style="display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;">
+            <button class="secondary" type="button" data-kalendarz-prev>◀ Poprzedni</button>
+            <strong data-kalendarz-naglowek></strong>
+            <button class="secondary" type="button" data-kalendarz-next>Następny ▶</button>
+            <select id="tryb-kalendarza">
+              <option value="month">Widok miesięczny</option>
+              <option value="week">Widok tygodniowy</option>
+            </select>
+            <select id="filter-status-kalendarz">
+              <option value="all">Wszystkie statusy</option>
+              <option value="todo">Do zrobienia</option>
+              <option value="in_progress">W trakcie</option>
+              <option value="done">Zakończone</option>
+            </select>
+          </div>
+        </header>
+
+        <div class="alert" data-komunikat-zadania role="status" style="display:none;"></div>
+        <div id="lista-zadan" style="display:none;"></div>
+        <div id="kalendarz" style="margin-top:1.5rem;" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <footer>
+      © <span id="rok"></span> Taskly – kalendarz.</footer>
+
+    <script>
+      document.getElementById('rok').textContent = new Date().getFullYear();
+    </script>
+    <script type="module">
+      import { initZadania } from '/Skrypt/Zadania.js';
+      import { initKalendarz } from '/Skrypt/Kalendarz.js';
+      import { handleLogout } from '/Skrypt/Uwierzytelnienie.js';
+
+      initZadania();
+      initKalendarz();
+      handleLogout();
+    </script>
+  </body>
+</html>

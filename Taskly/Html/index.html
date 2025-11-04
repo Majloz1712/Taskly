@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Taskly – Panel</title>
+    <link rel="stylesheet" href="/Styl/style.css" />
+  </head>
+  <body>
+    <script src="/konfiguracja.js"></script>
+    <header>
+      <div class="nav-logo" aria-label="Taskly nawigacja główna">
+        <span>🌓</span>
+        <span>Taskly</span>
+      </div>
+      <nav class="nav-akcje" aria-label="Szybkie akcje">
+        <a href="/Html/lista-zadan.html">Lista zadań</a>
+        <a href="/Html/kalendarz.html">Kalendarz</a>
+        <a href="/Html/ustawienia.html">Ustawienia</a>
+        <button type="button" data-akcja="wyloguj">Wyloguj</button>
+      </nav>
+    </header>
+
+    <main class="dashboard" aria-live="polite">
+      <aside class="sidebar" aria-label="Skróty i statystyki">
+        <h2>Szybkie skróty</h2>
+        <a href="#formularz-zadanie">Dodaj zadanie <span class="badge-count" data-licznik-zadan>0 zadań</span></a>
+        <a href="/Html/lista-zadan.html">Zobacz listę <span class="badge-count">pełny widok</span></a>
+        <a href="/Html/kalendarz.html">Podgląd kalendarza</a>
+        <div class="card">
+          <h3>Filtry</h3>
+          <div class="form-group">
+            <label for="filter-status">Status</label>
+            <select id="filter-status">
+              <option value="">Wszystkie</option>
+              <option value="todo">Do zrobienia</option>
+              <option value="in_progress">W trakcie</option>
+              <option value="done">Zakończone</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="wyszukiwarka">Wyszukaj</label>
+            <input id="wyszukiwarka" type="search" placeholder="Szukaj po tytule" />
+          </div>
+          <div class="form-group">
+            <label for="filter-od">Data od</label>
+            <input id="filter-od" type="date" />
+          </div>
+          <div class="form-group">
+            <label for="filter-do">Data do</label>
+            <input id="filter-do" type="date" />
+          </div>
+        </div>
+      </aside>
+
+      <section class="grid-2">
+        <section class="card" aria-labelledby="naglowek-zadania">
+          <header style="display:flex;justify-content:space-between;align-items:center;gap:1rem;">
+            <div>
+              <h2 id="naglowek-zadania">Twoje zadania</h2>
+              <p>Filtruj i zarządzaj zadaniami w jednym miejscu.</p>
+            </div>
+            <select id="sortowanie" aria-label="Sortowanie zadań">
+              <option value="due_date:asc">Najbliższy termin</option>
+              <option value="due_date:desc">Najdalszy termin</option>
+              <option value="status:asc">Status rosnąco</option>
+              <option value="status:desc">Status malejąco</option>
+              <option value="created_at:desc">Najnowsze</option>
+            </select>
+          </header>
+
+          <div class="alert" data-komunikat-zadania role="status"></div>
+          <div id="lista-zadan" class="task-list" aria-live="polite"></div>
+          <div class="paginacja" aria-label="Paginacja zadań">
+            <button class="secondary" data-strona="first">⏮ Pierwsza</button>
+            <button class="secondary" data-strona="prev">◀ Poprzednia</button>
+            <span data-paginacja-info>Strona 1</span>
+            <button class="secondary" data-strona="next">Następna ▶</button>
+            <button class="secondary" data-strona="last">Ostatnia ⏭</button>
+          </div>
+        </section>
+
+        <section class="card" aria-labelledby="naglowek-dodaj">
+          <h2 id="naglowek-dodaj">Dodaj nowe zadanie</h2>
+          <form id="formularz-zadanie" class="task-form">
+            <div class="form-group">
+              <label for="title">Tytuł zadania</label>
+              <input id="title" name="title" required minlength="3" placeholder="Napisz raport" />
+            </div>
+            <div class="form-group">
+              <label for="description">Opis</label>
+              <textarea id="description" name="description" rows="4" placeholder="Szczegóły, zasoby, linki"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="due_date">Termin</label>
+              <input id="due_date" name="due_date" type="datetime-local" />
+            </div>
+            <div class="form-group">
+              <label for="duration">Czas trwania (minuty)</label>
+              <input id="duration" name="duration" type="number" min="0" step="5" />
+            </div>
+            <div class="form-group">
+              <label for="status">Status początkowy</label>
+              <select id="status" name="status">
+                <option value="todo">Do zrobienia</option>
+                <option value="in_progress">W trakcie</option>
+                <option value="done">Zakończone</option>
+              </select>
+            </div>
+            <button type="submit">Zapisz zadanie</button>
+          </form>
+        </section>
+
+        <section class="card" aria-labelledby="naglowek-mini-kalendarz">
+          <header style="display:flex;justify-content:space-between;align-items:center;">
+            <h2 id="naglowek-mini-kalendarz">Szybki podgląd kalendarza</h2>
+            <div style="display:flex;gap:0.5rem;">
+              <button class="secondary" type="button" data-kalendarz-prev aria-label="Poprzedni okres">◀</button>
+              <button class="secondary" type="button" data-kalendarz-next aria-label="Następny okres">▶</button>
+            </div>
+          </header>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;">
+            <strong data-kalendarz-naglowek></strong>
+            <select id="tryb-kalendarza" aria-label="Tryb kalendarza">
+              <option value="month">Miesiąc</option>
+              <option value="week">Tydzień</option>
+            </select>
+          </div>
+          <select id="filter-status-kalendarz" aria-label="Filtr statusu w kalendarzu" style="margin-top:1rem;">
+            <option value="all">Wszystkie statusy</option>
+            <option value="todo">Do zrobienia</option>
+            <option value="in_progress">W trakcie</option>
+            <option value="done">Zakończone</option>
+          </select>
+          <div id="kalendarz" style="margin-top:1rem;" aria-live="polite"></div>
+        </section>
+      </section>
+    </main>
+
+    <footer>
+      © <span id="rok"></span> Taskly – Zorganizuj swój dzień w ciemnym stylu.
+    </footer>
+
+    <script>
+      document.getElementById('rok').textContent = new Date().getFullYear();
+    </script>
+    <script type="module">
+      import { initZadania } from '/Skrypt/Zadania.js';
+      import { initKalendarz } from '/Skrypt/Kalendarz.js';
+      import { handleLogout } from '/Skrypt/Uwierzytelnienie.js';
+
+      initZadania();
+      initKalendarz();
+      handleLogout();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pl" data-view="lista">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Taskly – Lista zadań</title>
+    <link rel="stylesheet" href="/Styl/style.css" />
+  </head>
+  <body data-tryb-lista="true">
+    <script src="/konfiguracja.js"></script>
+    <header>
+      <div class="nav-logo">
+        <span>🌓</span>
+        <span>Taskly</span>
+      </div>
+      <nav class="nav-akcje">
+        <a href="/Html/index.html">Panel</a>
+        <a href="/Html/kalendarz.html">Kalendarz</a>
+        <a href="/Html/ustawienia.html">Ustawienia</a>
+        <button type="button" data-akcja="wyloguj">Wyloguj</button>
+      </nav>
+    </header>
+
+    <main class="dashboard">
+      <section class="card">
+        <header style="display:flex;flex-direction:column;gap:1rem;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+            <div>
+              <h1>Lista zadań</h1>
+              <p>Przeglądaj, filtruj i wykonuj operacje masowe.</p>
+            </div>
+            <button class="secondary" type="button" onclick="window.location.href='/Html/index.html'">← Wróć do panelu</button>
+          </div>
+          <div class="szukajka">
+            <label style="flex:1;min-width:180px;">
+              <span class="form-label">Szukaj</span>
+              <input id="wyszukiwarka" type="search" placeholder="Nazwa zadania" />
+            </label>
+            <label>
+              <span class="form-label">Status</span>
+              <select id="filter-status">
+                <option value="">Wszystkie</option>
+                <option value="todo">Do zrobienia</option>
+                <option value="in_progress">W trakcie</option>
+                <option value="done">Zakończone</option>
+              </select>
+            </label>
+            <label>
+              <span class="form-label">Data od</span>
+              <input type="date" id="filter-od" />
+            </label>
+            <label>
+              <span class="form-label">Data do</span>
+              <input type="date" id="filter-do" />
+            </label>
+            <label>
+              <span class="form-label">Sortowanie</span>
+              <select id="sortowanie">
+                <option value="due_date:asc">Najbliższe terminy</option>
+                <option value="due_date:desc">Najdalsze terminy</option>
+                <option value="status:asc">Status rosnąco</option>
+                <option value="status:desc">Status malejąco</option>
+                <option value="created_at:desc">Najnowsze</option>
+              </select>
+            </label>
+          </div>
+        </header>
+
+        <div class="alert" data-komunikat-zadania role="status"></div>
+
+        <div data-masowe-akcje style="display:flex;gap:0.75rem;flex-wrap:wrap;align-items:center;margin:1rem 0;">
+          <span>Zaznaczone:</span>
+          <button class="secondary" type="button" data-akcja-masowa="done">Oznacz jako zakończone</button>
+          <button class="secondary" type="button" data-akcja-masowa="in_progress">Oznacz jako w trakcie</button>
+          <button class="secondary" type="button" data-akcja-masowa="todo">Przenieś do listy</button>
+          <button class="secondary" type="button" data-akcja-masowa="delete">Usuń</button>
+          <button class="secondary" type="button" data-akcja-masowa="clear">Wyczyść zaznaczenie</button>
+        </div>
+
+        <div id="lista-zadan" class="task-list" aria-live="polite"></div>
+
+        <div class="paginacja" aria-label="Paginacja zadań">
+          <button class="secondary" data-strona="first">⏮ Pierwsza</button>
+          <button class="secondary" data-strona="prev">◀ Poprzednia</button>
+          <span data-paginacja-info>Strona 1</span>
+          <button class="secondary" data-strona="next">Następna ▶</button>
+          <button class="secondary" data-strona="last">Ostatnia ⏭</button>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      © <span id="rok"></span> Taskly – pełna lista zadań.
+    </footer>
+
+    <script>
+      document.getElementById('rok').textContent = new Date().getFullYear();
+    </script>
+    <script type="module">
+      import { initZadania } from '/Skrypt/Zadania.js';
+      import { handleLogout } from '/Skrypt/Uwierzytelnienie.js';
+
+      initZadania();
+      handleLogout();
+    </script>
+  </body>
+</html>
