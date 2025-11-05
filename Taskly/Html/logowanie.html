@@ -4,17 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Taskly – Logowanie</title>
-    <link rel="stylesheet" href="/Styl/style.css" />
+    <link rel="stylesheet" href="../Styl/style.css" />
   </head>
-  <body>
-    <script src="/konfiguracja.js"></script>
-    <main class="dashboard" style="max-width:480px;margin:0 auto;padding-top:4rem;">
-      <section class="card">
-        <header style="text-align:center;">
-          <h1>Witaj ponownie w Taskly</h1>
-          <p>Zaloguj się, aby kontynuować planowanie.</p>
+  <body class="logowanie-body">
+    <script src="../konfiguracja.js"></script>
+    <main class="logowanie-main" role="main">
+      <section class="logowanie-panel" aria-labelledby="logowanie-tytul">
+        <header class="logowanie-header">
+          <h1 id="logowanie-tytul">Witaj ponownie w Taskly</h1>
+          <p class="logowanie-opis">Zaloguj się, aby kontynuować planowanie.</p>
         </header>
-        <form id="formularz-logowanie" class="task-form" novalidate>
+        <form id="formularz-logowanie" class="task-form logowanie-form" novalidate>
           <div class="form-group">
             <label for="email">Adres e-mail</label>
             <input type="email" id="email" name="email" required autocomplete="email" />
@@ -24,18 +24,13 @@
             <input type="password" id="password" name="password" required minlength="6" autocomplete="current-password" />
           </div>
           <div id="komunikat-logowanie" class="alert" role="status" aria-live="polite"></div>
-          <button type="submit">Zaloguj</button>
+          <button type="submit" class="btn-gradient">Zaloguj</button>
         </form>
-        <p style="text-align:center;margin-top:1.5rem;">
-          Nie masz konta? <a href="/Html/rejestracja.html">Zarejestruj się</a>
+        <p class="logowanie-link">
+          Nie masz konta? <a href="rejestracja.html">Zarejestruj się</a>
         </p>
       </section>
     </main>
-
-    <script type="module">
-      import { handleLoginForm } from '/Skrypt/Uwierzytelnienie.js';
-
-      handleLoginForm();
-    </script>
+    <script type="module" src="../Skrypt/Uwierzytelnienie.js"></script>
   </body>
 </html>

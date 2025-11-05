@@ -95,6 +95,8 @@ export const handleLoginForm = () => {
     const email = form.email.value.trim();
     const password = form.password.value.trim();
 
+    console.log('Próba logowania:', email, password);
+
     const { error } = await client.auth.signInWithPassword({ email, password });
     if (error) {
       komunikat.textContent = error.message || 'Nie udało się zalogować.';
@@ -166,6 +168,11 @@ export const handleRegisterForm = () => {
     }
   });
 };
+
+document.addEventListener('DOMContentLoaded', () => {
+  handleLoginForm();
+  handleRegisterForm();
+});
 
 export const handleLogout = () => {
   const przycisk = document.querySelector('[data-akcja="wyloguj"]');
