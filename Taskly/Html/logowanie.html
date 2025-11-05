@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Taskly – Logowanie</title>
+    <link rel="stylesheet" href="../Styl/style.css" />
+  </head>
+  <body class="logowanie-body">
+    <script src="../konfiguracja.js"></script>
+    <main class="logowanie-main" role="main">
+      <section class="logowanie-panel" aria-labelledby="logowanie-tytul">
+        <header class="logowanie-header">
+          <h1 id="logowanie-tytul">Witaj ponownie w Taskly</h1>
+          <p class="logowanie-opis">Zaloguj się, aby kontynuować planowanie.</p>
+        </header>
+        <form id="formularz-logowanie" class="task-form logowanie-form" novalidate>
+          <div class="form-group">
+            <label for="email">Adres e-mail</label>
+            <input type="email" id="email" name="email" required autocomplete="email" />
+          </div>
+          <div class="form-group">
+            <label for="password">Hasło</label>
+            <input type="password" id="password" name="password" required minlength="6" autocomplete="current-password" />
+          </div>
+          <div id="komunikat-logowanie" class="alert" role="status" aria-live="polite"></div>
+          <button type="submit" class="btn-gradient">Zaloguj</button>
+        </form>
+        <p class="logowanie-link">
+          Nie masz konta? <a href="rejestracja.html">Zarejestruj się</a>
+        </p>
+      </section>
+    </main>
+    <script type="module" src="../Skrypt/Uwierzytelnienie.js"></script>
+  </body>
+</html>
